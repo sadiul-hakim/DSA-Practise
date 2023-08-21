@@ -29,7 +29,7 @@ public class AVLTree<T extends Comparable<T>> implements Tree<T>{
         updateHeight(node);
         System.out.println("Node :"+node.getData()+" height: "+node.getHeight());
         System.out.println("----------------------------");
-        return node;
+        return applyRotate(node);
     }
 
     @Override
@@ -118,19 +118,95 @@ public class AVLTree<T extends Comparable<T>> implements Tree<T>{
     }
 
     private Node<T> applyRotate(Node<T> node){
-        return null;
+        int balance = balance(node);
+
+        if(balance > 1){
+            // left heavy situation
+
+            //1. need to handle left-right situation
+            if(balance(node.getLeftNode()) < 0){
+                node.setLeftNode(rotateLeft(node.getLeftNode()));
+            }
+
+            // 2. need right rotation
+            return rotateRight(node);
+        }
+
+        if(balance < -1){
+            // right heavy
+
+            // 1. need to handle right-left situation
+            if(balance(node.getRightNode()) > 0){
+                node.setRightNode(rotateRight(node.getRightNode()));
+            }
+
+            // 2. need left rotation
+            return rotateLeft(node);
+        }
+
+        return node;
+    }
+
+    private Node<T> rotateLeft(Node<T> node) {
+
+        // store right node
+        Node<T> rightNode = node.getRightNode();
+
+        // store left node of rightNode
+        Node<T> centerNode = rightNode.getLeftNode();
+
+        // set the node as the left node of the rightNode
+        rightNode.setLeftNode(node);
+
+        // set the centerNode as the left node of node
+        node.setLeftNode(centerNode);
+
+        // update height of both node and rightNode
+        updateHeight(node);
+        updateHeight(rightNode);
+
+        // return right node as the root
+        return rightNode;
+    }
+
+    private Node<T> rotateRight(Node<T> node) {
+        // store left node
+        Node<T> leftNode = node.getLeftNode();
+
+        // store right node of the left node
+        Node<T> centerNode = leftNode.getRightNode();
+
+        // set node as the right node of leftNode
+        leftNode.setRightNode(node);
+
+        // set center node as the left node of the node
+        node.setRightNode(centerNode);
+
+        // update height of both node and leftNode
+        updateHeight(node);
+        updateHeight(leftNode);
+
+        // return leftNode as root
+        return leftNode;
     }
 
     private int height(Node<T> node){
         return node == null ? 0 : node.getHeight();
     }
 
+    private int balance(Node<T> node){
+        return node != null ? height(node.getLeftNode()) - height(node.getRightNode())
+                : 0;
+    }
+
     public static void main(String[] args) {
         AVLTree<Integer> avl = new AVLTree<>();
         avl.insert(6);
         avl.insert(4);
-        avl.insert(3);
-        avl.insert(8);
+        avl.insert(5);
+
+        System.out.println(avl.balance(avl.root.getLeftNode()));
+//        avl.insert(9);
 
 //        avl.traverse();
     }
