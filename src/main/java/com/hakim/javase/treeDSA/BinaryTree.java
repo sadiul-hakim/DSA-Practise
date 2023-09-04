@@ -148,6 +148,34 @@ public class BinaryTree<T> {
         return Math.max(leftHeight, rightHeight) + 1;
     }
 
+    public void dfs(Node<T> root){
+
+        Stack<Node<T>> stack = new Stack<>();
+        stack.add(root);
+        while (!stack.isEmpty()){
+
+            Node<T> node = stack.pop();
+            if(node.leftNode != null) stack.add(node.leftNode);
+            if(node.rightNode != null) stack.add(node.rightNode);
+            System.out.println(node.value);
+        }
+    }
+
+    public void dfs(){
+
+        if(root == null) return;
+
+        Stack<Node<T>> stack = new Stack<>();
+        stack.add(root);
+        while (!stack.isEmpty()){
+
+            Node<T> node = stack.pop();
+            if(node.leftNode != null) stack.add(node.leftNode);
+            if(node.rightNode != null) stack.add(node.rightNode);
+            System.out.println(node.value);
+        }
+    }
+
     public static void main(String[] args) {
 
         // Create Tree hierarchy
@@ -172,6 +200,6 @@ public class BinaryTree<T> {
 //        System.out.println();
 //        tree.levelOrderPrint(node0);
 
-        System.out.println(tree.findMax(node0));
+        tree.dfs(node0);
     }
 }
