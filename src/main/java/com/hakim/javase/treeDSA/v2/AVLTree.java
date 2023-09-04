@@ -180,7 +180,7 @@ public class AVLTree<T extends Comparable<T>> implements Tree<T>{
         leftNode.setRightNode(node);
 
         // set center node as the left node of the node
-        node.setRightNode(centerNode);
+        node.setLeftNode(centerNode);
 
         // update height of both node and leftNode
         updateHeight(node);

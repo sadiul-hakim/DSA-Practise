@@ -137,6 +137,17 @@ public class BinaryTree<T> {
         return true;
     }
 
+    public int height(Node<T> root) {
+        // Write your code here.
+
+        if (root == null) return -1;
+
+        int leftHeight = height(root.leftNode);
+        int rightHeight = height(root.rightNode);
+
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+
     public static void main(String[] args) {
 
         // Create Tree hierarchy

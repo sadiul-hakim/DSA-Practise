@@ -44,7 +44,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements Tree<T> {
 
     @Override
     public void delete(T data) {
-
+        root = delete(data,root);
     }
 
     private Node<T> delete(T data, Node<T> node) {
