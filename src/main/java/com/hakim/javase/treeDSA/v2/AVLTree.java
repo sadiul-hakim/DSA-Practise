@@ -206,8 +206,5 @@ public class AVLTree<T extends Comparable<T>> implements Tree<T>{
         avl.insert(5);
 
         System.out.println(avl.balance(avl.root.getLeftNode()));
-//        avl.insert(9);
-
-//        avl.traverse();
     }
 }

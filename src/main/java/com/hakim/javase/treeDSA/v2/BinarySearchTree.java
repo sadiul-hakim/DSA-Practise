@@ -12,7 +12,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements Tree<T> {
     }
 
     private void insert(T data, Node<T> node) {
-        if (node.getData().compareTo(data) < 0) {
+        if (data.compareTo(node.getData()) < 0) {
             if (node.getLeftNode() == null) {
                 node.setLeftNode(new Node<>(data));
             } else {
@@ -33,7 +33,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements Tree<T> {
             return node;
         }
 
-        if (node.getData().compareTo(data) < 0) {
+        if (data.compareTo(node.getData()) < 0) {
             node.setLeftNode(insertV2(data, node.getLeftNode()));
             return node.getLeftNode();
         } else {

@@ -44,6 +44,7 @@ public class BinaryTree<T> {
         return parent.rightNode;
     }
 
+    // Tree DFS
     private void preOrderPrint(Node<T> root) {
 
         if (root == null) {
@@ -59,6 +60,7 @@ public class BinaryTree<T> {
 
     }
 
+    // Tree DFS
     private void inOrderPrint(Node<T> root) {
 
         if (root == null) {
@@ -73,6 +75,7 @@ public class BinaryTree<T> {
         inOrderPrint(root.rightNode);
     }
 
+    // Tree DFS
     private void postOrderPrint(Node<T> root) {
 
         if (root == null) {
@@ -89,6 +92,7 @@ public class BinaryTree<T> {
         System.out.print(root.value + ",");
     }
 
+    // Tree BFS
     private void levelOrderPrint(Node<T> root){
 
         if(root == null) return;
