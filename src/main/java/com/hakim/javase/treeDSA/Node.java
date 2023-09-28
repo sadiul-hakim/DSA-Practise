@@ -1,4 +1,4 @@
-package com.hakim.javase.treeDSA.v2;
+package com.hakim.javase.treeDSA;
 
 /**
  * We are sharing this Node amon many Tress like Binary Search Tree,AVL Tree, Red Black Tree and many more.

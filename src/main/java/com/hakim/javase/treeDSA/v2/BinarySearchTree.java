@@ -1,5 +1,8 @@
 package com.hakim.javase.treeDSA.v2;
 
+import com.hakim.javase.treeDSA.Node;
+import com.hakim.javase.treeDSA.Tree;
+
 public class BinarySearchTree<T extends Comparable<T>> implements Tree<T> {
 
     private Node<T> root;
@@ -59,7 +62,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements Tree<T> {
             if(node.getRightNode() == null) return node.getLeftNode();
 
             node.setData(getMax(node.getLeftNode()));
-            delete(node.getData(),node.getLeftNode());
+            node.setLeftNode(delete(node.getData(),node.getLeftNode()));
         }
 
         return node;
@@ -93,11 +96,12 @@ public class BinarySearchTree<T extends Comparable<T>> implements Tree<T> {
     public T getMax(Node<T> node) {
         if (node == null) return null;
 
-        while (node.getRightNode() != null) {
-            node = node.getRightNode();
+        Node<T> temp = node;
+        while (temp.getRightNode() != null) {
+            temp = temp.getRightNode();
         }
 
-        return node.getData();
+        return temp.getData();
     }
 
     @Override
@@ -118,7 +122,16 @@ public class BinarySearchTree<T extends Comparable<T>> implements Tree<T> {
     }
 
     public static void main(String[] args) {
-        Node<Integer> node = new Node<>(1);
-        System.out.println(node.getData().compareTo(3));
+        BinarySearchTree<Integer> root = new BinarySearchTree<>();
+        root.insert(10);
+        root.insert(4);
+        root.insert(14);
+        root.insert(2);
+        root.insert(6);
+        root.insert(12);
+        root.insert(16);
+
+        root.delete(14);
+        root.traverse();
     }
 }

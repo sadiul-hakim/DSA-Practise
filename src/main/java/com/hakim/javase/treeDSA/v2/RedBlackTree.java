@@ -1,5 +1,9 @@
 package com.hakim.javase.treeDSA.v2;
 
+import com.hakim.javase.treeDSA.Color;
+import com.hakim.javase.treeDSA.Node;
+import com.hakim.javase.treeDSA.Tree;
+
 public class RedBlackTree<T extends Comparable<T>> implements Tree<T> {
     private Node<T> root;
 

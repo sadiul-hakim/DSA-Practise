@@ -1,6 +1,12 @@
 package com.hakim.javase.treeDSA.v2;
 
-public class AVLTree<T extends Comparable<T>> implements Tree<T>{
+import com.hakim.javase.treeDSA.Node;
+import com.hakim.javase.treeDSA.Tree;
+
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class AVLTree<T extends Comparable<T>> implements Tree<T> {
     private Node<T> root;
 
     @Override
@@ -22,7 +28,7 @@ public class AVLTree<T extends Comparable<T>> implements Tree<T>{
         } else{
             System.out.println("Inserter node "+data+", Height: "+node.getHeight());
             System.out.println("----------------------------");
-
+            updateHeight(node);
             return node;
         }
 
@@ -58,7 +64,7 @@ public class AVLTree<T extends Comparable<T>> implements Tree<T>{
 
     @Override
     public void traverse() {
-        inOrderTraverse(root);
+        levelOrderTraversal(root);
     }
 
     private void inOrderTraverse(Node<T> node) {
@@ -67,6 +73,22 @@ public class AVLTree<T extends Comparable<T>> implements Tree<T>{
         inOrderTraverse(node.getLeftNode());
         System.out.println(node.getData()+ "Height:"+node.getHeight() );
         inOrderTraverse(node.getRightNode());
+    }
+
+    private void levelOrderTraversal(Node<T> node) {
+        if (node == null) return;
+
+        Queue<Node<T>> queue = new LinkedList<>();
+        queue.offer(node);
+
+        while (!queue.isEmpty()){
+            Node<T> poll = queue.poll();
+            System.out.println(poll.getData());
+
+            if(poll.getLeftNode() != null) queue.offer(poll.getLeftNode());
+            if(poll.getRightNode() != null) queue.offer(poll.getRightNode());
+        }
+
     }
 
     @Override
@@ -124,7 +146,7 @@ public class AVLTree<T extends Comparable<T>> implements Tree<T>{
             // left heavy situation
 
             //1. need to handle left-right situation
-            if(balance(node.getLeftNode()) < 0){
+            if(balance(node.getLeftNode()) <=  1){
                 node.setLeftNode(rotateLeft(node.getLeftNode()));
             }
 
@@ -136,7 +158,7 @@ public class AVLTree<T extends Comparable<T>> implements Tree<T>{
             // right heavy
 
             // 1. need to handle right-left situation
-            if(balance(node.getRightNode()) > 0){
+            if(balance(node.getRightNode()) >= 1){
                 node.setRightNode(rotateRight(node.getRightNode()));
             }
 
@@ -148,6 +170,7 @@ public class AVLTree<T extends Comparable<T>> implements Tree<T>{
     }
 
     private Node<T> rotateLeft(Node<T> node) {
+        System.out.println("Doing a left rotation......");
 
         // store right node
         Node<T> rightNode = node.getRightNode();
@@ -157,6 +180,7 @@ public class AVLTree<T extends Comparable<T>> implements Tree<T>{
 
         // set the node as the left node of the rightNode
         rightNode.setLeftNode(node);
+        node.setRightNode(null);
 
         // set the centerNode as the left node of node
         node.setLeftNode(centerNode);
@@ -170,6 +194,8 @@ public class AVLTree<T extends Comparable<T>> implements Tree<T>{
     }
 
     private Node<T> rotateRight(Node<T> node) {
+
+        System.out.println("Doing right rotation......");
         // store left node
         Node<T> leftNode = node.getLeftNode();
 
@@ -203,8 +229,12 @@ public class AVLTree<T extends Comparable<T>> implements Tree<T>{
         AVLTree<Integer> avl = new AVLTree<>();
         avl.insert(6);
         avl.insert(4);
+        avl.insert(8);
+        avl.insert(2);
         avl.insert(5);
+        avl.insert(7);
+        avl.insert(9);
 
-        System.out.println(avl.balance(avl.root.getLeftNode()));
+        avl.traverse();
     }
 }

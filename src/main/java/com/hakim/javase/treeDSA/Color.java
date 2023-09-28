@@ -1,4 +1,4 @@
-package com.hakim.javase.treeDSA.v2;
+package com.hakim.javase.treeDSA;
 
 public enum Color {
     RED("red"),

@@ -9,126 +9,141 @@ import java.util.Queue;
  * This type of tree is specially used for fast search and insertion.
  * In Binary Search Tree left nodes of a Parent node would be smaller and right nodes would be bigger.
  */
-public class BinarySearchTree {
-    private Node root;
+public class BinarySearchTree<T extends Comparable<T>> implements Tree<T>{
 
-    static class Node {
-        private int value;
-        private Node leftNode;
-        private Node rightNode;
+    private Node<T> root;
 
-        Node() {
 
-        }
-
-        Node(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return value;
-        }
+    @Override
+    public Tree<T> insert(T data) {
+        root = insert(data, root);
+        return this;
     }
 
-    private Node insert(Node parent, int value) {
+    private Node<T> insert(T data,Node<T> node){
 
-        if (parent == null) {
-            parent = new Node(value);
-            return parent;
+        if(node == null){
+            node = new Node<>(data);
+            return node;
         }
 
-        if (parent.getValue() > value) {
-            parent.leftNode = insert(parent.leftNode, value);
-            return parent.leftNode;
-        } else {
-            parent.rightNode = insert(parent.rightNode, value);
-            return parent.rightNode;
-        }
-    }
-
-    private Node delete(int key,Node node){
-        if(node == null) return null;
-
-        if(node.getValue() > key){
-            node.leftNode = delete(key,node.leftNode);
-        }else if(node.getValue() < key){
-            node.rightNode = delete(key,node.rightNode);
-        }else{
-            if(node.leftNode == null){
-                return node.rightNode;
-            }else if(node.rightNode == null){
-                return node.leftNode;
+        if(data.compareTo(node.getData()) < 0){
+            if(node.getLeftNode() == null){
+                node.setLeftNode(new Node<>(data));
+            }else {
+                insert(data,node.getLeftNode());
             }
-            node.leftNode.rightNode=node.rightNode; // todo: wrong
-            node = node.leftNode;
+        }else {
+            if(node.getRightNode() == null){
+                node.setRightNode(new Node<>(data));
+            }else {
+                insert(data,node.getRightNode());
+            }
         }
 
         return node;
     }
 
-    private void print(Node root) {
-
-        // pre order
-        if (root == null) return;
-
-        System.out.print(root.value + ",");
-        print(root.leftNode);
-        print(root.rightNode);
+    @Override
+    public void delete(T data) {
+        root = delete(data,root);
     }
 
-    private void printLevelOrder(Node root){
-        if(root == null) return;
+    private Node<T> delete(T data,Node<T> node){
 
-        Queue<Node> queue = new LinkedList<>();
-        queue.offer(root);
-        while(!queue.isEmpty()){
-            Node node = queue.poll();
-            System.out.print(node.value+",");
-            if(node.leftNode != null) queue.offer(node.leftNode);
-            if(node.rightNode != null) queue.offer(node.rightNode);
+        if(node == null) return null;
+
+        if(data.compareTo(node.getData()) < 0){
+            node.setLeftNode(delete(data,node.getLeftNode()));
+        } else if (data.compareTo(node.getData()) > 0) {
+            node.setRightNode(delete(data,node.getRightNode()));
+        }else{
+            if(node.getLeftNode() == null) return node.getRightNode();
+            if(node.getRightNode() == null) return node.getLeftNode();
+
+            node.setData(getMax(node.getLeftNode()));
+            node.setLeftNode(delete(node.getData(),node.getLeftNode()));
+        }
+
+        return node;
+    }
+
+    @Override
+    public void traverse() {
+        levelOrderTraversal(root);
+    }
+
+    private void levelOrderTraversal(Node<T> node){
+
+        if (node == null) return;
+
+        Queue<Node<T>> queue = new LinkedList<>();
+        queue.offer(node);
+        while (!queue.isEmpty()){
+            Node<T> poll = queue.poll();
+            System.out.println(poll.getData());
+
+            if(poll.getLeftNode() != null) queue.offer(poll.getLeftNode());
+            if(poll.getRightNode() != null) queue.offer(poll.getRightNode());
         }
     }
 
-    private Node search(Node node, int key) {
-        if (node == null || node.getValue() == key) return node;
+    @Override
+    public T getMax() {
 
-        if (node.getValue() > key) {
-            return search(node.leftNode, key);
-        } else {
-            return search(node.rightNode, key);
+        if(root == null) return null;
+
+        Node<T> temp = root;
+        while(temp.getRightNode() != null){
+            temp = temp.getRightNode();
         }
+
+        return temp.getData();
     }
 
-    private boolean validate(Node node,int min,int max){
-        if(node == null) return true;
+    public T getMax(Node<T> node) {
 
-        if(node.getValue() <= min || node.getValue() >= max) return false;
-        boolean isLeft = validate(node.leftNode,min,node.getValue());
-        if (isLeft){
-            return validate(node.rightNode,node.getValue(),max);
+        if(node == null) return null;
+
+        Node<T> temp = node;
+        while(temp.getRightNode() != null){
+            temp = temp.getRightNode();
         }
 
+        return temp.getData();
+    }
+
+    @Override
+    public T getMin() {
+
+        if(root == null) return null;
+
+        Node<T> temp = root;
+        while(temp.getLeftNode() != null){
+            temp = temp.getLeftNode();
+        }
+
+        return temp.getData();
+    }
+
+    @Override
+    public boolean isEmpty() {
         return false;
     }
 
     public static void main(String[] args) {
-        BinarySearchTree tree = new BinarySearchTree();
+        BinarySearchTree<Integer> tree = new BinarySearchTree<>();
 
-        Node node6 = tree.insert(tree.root, 6);
-        Node node4 = tree.insert(node6, 4);
-        Node node8 = tree.insert(node6, 8);
+        tree.insert(10);
+        tree.insert(4);
+        tree.insert(14);
+        tree.insert(2);
+        tree.insert(6);
+        tree.insert(12);
+        tree.insert(16);
 
-        Node node2 = tree.insert(node4, 2);
-        Node node5 = tree.insert(node4, 5);
+        tree.delete(14);
 
-        Node node7 = tree.insert(node8, 7);
-        Node node9 = tree.insert(node8, 9);
-
-        tree.printLevelOrder(node6);
-        node6=tree.delete(4,node6);
-        System.out.println();
-        tree.printLevelOrder(node6);
-
-
+        tree.traverse();
     }
 }
