@@ -180,7 +180,7 @@ public class AVLTree<T extends Comparable<T>> implements Tree<T> {
 
         // set the node as the left node of the rightNode
         rightNode.setLeftNode(node);
-        node.setRightNode(null);
+        node.setRightNode(null);// todo:
 
         // set the centerNode as the left node of node
         node.setLeftNode(centerNode);
@@ -227,13 +227,12 @@ public class AVLTree<T extends Comparable<T>> implements Tree<T> {
 
     public static void main(String[] args) {
         AVLTree<Integer> avl = new AVLTree<>();
-        avl.insert(6);
+        avl.insert(3);
         avl.insert(4);
-        avl.insert(8);
-        avl.insert(2);
         avl.insert(5);
-        avl.insert(7);
-        avl.insert(9);
+        avl.insert(6);
+        avl.insert(8);
+
 
         avl.traverse();
     }

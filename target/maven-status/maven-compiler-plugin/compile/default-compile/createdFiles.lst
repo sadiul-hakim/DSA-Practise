@@ -1,2 +1,6 @@
-com\hakim\javase\JavaSE.class
-com\hakim\javase\Holder.class
+com\hakim\javase\Main.class
+com\hakim\javase\problemSolving\MagicSqare.class
+com\hakim\javase\problemSolving\Anagrams.class
+com\hakim\javase\problemSolving\SmallestAndBiggestSubStr.class
+com\hakim\javase\problemSolving\Palindrome.class
+com\hakim\javase\problemSolving\Regex.class
